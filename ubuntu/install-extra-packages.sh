@@ -20,10 +20,16 @@ GUI_UTILS='gnome-rdp alltray simple-ccsm compizconfig-settings-manager rdesktop
 fusion-icon xpdf gparted xterm'
 COMPRESSION='rar unrar zip unzip p7zip-full'
 NET='thunderbird enigmail thunderbird-lightning irssi filezilla openconnect vpnc network-manager-openconnect network-manager-vpnc'
-JAVA='' # TODO sun-java6 isn't currently in maverick..
+JAVA='sun-java6-jdk sun-java6-jre sun-java6-fonts sun-java6-source
+sun-java6-javadb sun-javadb-doc'
 FILESYSTEMS='sshfs fusedav fusefat fuseiso fuseiso9660 fusesmb ntfsprogs'
 
-sudo apt-get install $EDITOR $DEV $HACK $VIDEO $UTILS $GUI_UTILS $AUDIO $EMULATORS $GAMES $SERVERS $AVAHI $NET $COMPRESSION $CODECS $FILESYSTEMS
+sudo apt-get install $EDITOR $DEV $HACK $VIDEO $UTILS $GUI_UTILS $AUDIO $EMULATORS $GAMES $SERVERS $AVAHI $NET $COMPRESSION $CODECS $FILESYSTEMS $JAVA -y
+
+
+REMOVE='icedtea-6-jre-cacao icedtea6-plugin'
+
+sudo apt-get remove $REMOVE -y
 
 # TODO: google chrome repo
 # TODO: libcss
