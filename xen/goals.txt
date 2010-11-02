@@ -1,0 +1,19 @@
+Sprint 1
+- Get a domO Debian Squeeze up with Xen 4.0
+- Support paravirtualization and HVM
+- Try managing tools
+- Try both image-based and LVM-based guests
+
+Sprint 2
+- Hopefully use LVM-based guests
+- Encrypted and non-encrypted guests
+- Run FreeNAS or similar on encrypted guest
+
+Sprint 3
+- Use a firewall-host if possible for domU guests
+- Dedicate a physical NIC to the firewall
+- Dedicate another physical NIC to a guest i domU
+
+Sprint 4
+- Set up managing/monitoring host
+-

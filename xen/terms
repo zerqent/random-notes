@@ -1,2 +1,0 @@
-dom0 - the privilegied domain (full access to hw, manage rights)
-domU - other guests

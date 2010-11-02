@@ -1,0 +1,21 @@
+dom0 - the privilegied domain (full access to hw, manage rights)
+domU - other guests
+
+To run MS Windows unmodified requires x86 hw virtualization and xen 3.0
+
+paravirtualization - requires modificated os
+hvm - unmodified guests. cpu capabilities (xen 3.0)
+
+debian packages: (dom0)
+xen-linux-system-2.6.32-5-xen-amd64 (metapackage)
+
+Virtual network? Perhaps possible with just vanilla linux and advanced kernel features
+vde2 ? (available in debian)
+openvswitch (apache, not package in debian)
+
+
+
+Links
+
+Xen Network:
+http://wiki.xensource.com/xenwiki/XenNetworking#head-2f3705a105a6eefef635c5cd7a2737f600243021
