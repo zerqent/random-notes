@@ -1,0 +1,51 @@
+Clean install - amd64-squeeze-debianinstall2
+    - Paritition: Only 20 GB root, 2 GB swap, rest is free
+    - Only package installed SSH-server
+
+On reboot
+    - aptitude install xen-linux-system-2.6.32-5-xen-amd64 xen-tools
+    - reboot
+    - Actually wrong - we are not running dom0 yet, we only have a
+      Xen-compatible kernel.
+
+Install things to make life simpler
+    - aptitude install vim screen nmap bash-completion python-optcomplete
+
+
+Set up some networking - static:
+allow-hotplug eth0
+auto eth0
+iface eth0 inet static
+    address 192.168.1.2
+    netmask 255.255.255.0
+    broadcast 192.168.1.255
+    network 192.168.1.0
+    gateway 192.168.1.1
+
+
+EDIT: Seems we are not running XEN but normal linxu which is XEN ready.
+    - mv -i /etc/grub.d/10_linux /etc/grub.d/50_linux
+    update-grub2
+
+EDIT2: We also lack qemu, which we need for HVM
+    - aptitude install xen-qemu-dm-4.0
+    # Seriously, this installs a lot of crap
+
+
+Create a VM - using disk as storage:
+xen-create-image --hostname test1 --dhcp --scsi --vcpus 2 --pygrub --dist lenny --dir .
+
+This results in bad config file, e.g. file paths are wrong. use absolute paths in the future
+# root password gets printed after command
+
+
+Running the VM:
+    - xen create -c /etc/xen/test1.cfg
+    # will give you a console to the instance
+    # -c will autoconnect, skip it to just have it start
+
+root@moonlight:/home/zerqent# xm list
+Name                                        ID   Mem VCPUs      State   Time(s)
+Domain-0                                     0  1859     3     r-----    198.0
+test1                                        3   128     2     -b----      6.4
+

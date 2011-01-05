@@ -1,0 +1,67 @@
+# Really the same as
+# http://wiki.xensource.com/xenwiki/EncryptedPartitions?highlight=(encrypted)
+
+
+- Create a partition with the rest of the disk - PRIMARY paritition
+- In my case sda3
+
+
+root@moonlight:~# fdisk -l /dev/sda
+
+Disk /dev/sda: 1000.2 GB, 1000204886016 bytes
+255 heads, 63 sectors/track, 121601 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x000c54cb
+
+   Device Boot      Start         End      Blocks   Id  System
+   /dev/sda1   *           1        3648    29295616   83  Linux
+   /dev/sda2            3648        3891     1951745    5  Extended
+   /dev/sda3            3891      121601   945510624+  83  Linux
+   /dev/sda5            3648        3891     1951744   82  Linux swap / Solaris
+
+# Install crypt-stuff
+aptitude install cryptsetup
+
+# Had to reboot to get access to sda3, dunno why (probably xen-stuff, or
+# perhaps the system does not fully know about the paritition before booting
+
+# Create encrypted container:
+cryptsetup -c aes-cbc-essiv:sha256 -y -s 256 luksFormat /dev/sda3
+# Will get asked for password here
+
+# Open an encrypted devise
+cryptsetup luksOpen /dev/sda3 crypt
+
+# install lvm2
+aptitude install lvm2
+
+# Configure some LVM:
+/etc/lvm/lvm.conf
+
+filter = [ "a|^/dev/mapper/crypt$|", "r/.*/" ]
+types = [ "device-mapper", 16 ]
+
+root@moonlight:/home/zerqent# pvcreate /dev/mapper/crypt
+  Physical volume "/dev/mapper/crypt" successfully created
+root@moonlight:/home/zerqent# vgcreate vg /dev/mapper/crypt
+  Volume group "vg" successfully created
+
+# Ready to make parititions
+
+Make LVM accessible after reboot:
+# Before unlocking:
+root@moonlight:/home/zerqent# vgscan 
+  Reading all physical volumes.  This may take a while...
+  No volume groups found
+
+# Open it
+cryptsetup luksOpen /dev/sda3 crypt
+
+# VGSCAN
+root@moonlight:/home/zerqent# vgscan 
+  Reading all physical volumes.  This may take a while...
+  Found volume group "vg" using metadata type lvm2
+
+
