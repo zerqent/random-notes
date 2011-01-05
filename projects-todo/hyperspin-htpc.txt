@@ -1,0 +1,11 @@
+New HTPC
+    - Run Hyperspin-Fe flawlessly
+    - Run nullDC (Dreamcast) and possible Dolphin (Gamecube) flawlessly
+        - As well as older consoles, possibly also PS2?
+
+Controller
+    - Wireless
+    - PS3 - expensive but good
+        - Button layout compared to Xbox, Dreamcast, Gamecube, will it be fine?
+
+
